@@ -1,0 +1,19 @@
+name: cw7-deploy
+
+on: push
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Upload via FTP
+        run: |
+          echo "Starting FTP upload..."
+          curl -T "./.dist/*" \
+            --ftp-create-dirs \
+            --user "${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}" \
+            "${{ secrets.FTP_SERVER }}/"
